@@ -21,6 +21,9 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.instance.isLive)
+            return ;
+
         switch (id) {
             case 0:
                 transform.Rotate(Vector3.back * speed * Time.deltaTime);
@@ -80,6 +83,11 @@ public class Weapon : MonoBehaviour
             speed = 0.3f;
                 break;
         }
+
+        // Hand Set
+        Hand hand = player.hands[(int)data.itemType];
+        hand.spriter.sprite = data.hand;
+        hand.gameObject.SetActive(true);
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
