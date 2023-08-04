@@ -18,6 +18,8 @@ public class LevelUp : MonoBehaviour
         Next();
         rect.localScale = Vector3.one;
         GameManager.instance.Stop();
+        AudioManager.instance.Playsfx(AudioManager.Sfx.LevelUp);
+        AudioManager.instance.EffectBgm(true);
     }
 
     // Update is called once per frame
@@ -25,6 +27,8 @@ public class LevelUp : MonoBehaviour
     {
         rect.localScale = Vector3.zero;
         GameManager.instance.Resume();
+        AudioManager.instance.Playsfx(AudioManager.Sfx.Select);
+        AudioManager.instance.EffectBgm(false);
     }
 
     public void Select(int index)

@@ -46,8 +46,8 @@ public class Weapon : MonoBehaviour
 
     public void LevelUp(float damage, int count)
     {
-        this.damage = damage;
-        this.count += count;
+        this.damage = damage * Character.Damage;
+        this.count += count + Character.Count;
 
         if (id == 0)
             Batch();
@@ -64,8 +64,8 @@ public class Weapon : MonoBehaviour
 
         // Property Set
         id = data.itemId;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        damage = data.baseDamage * Character.Damage;
+        count = data.baseCount + Character.Count;
 
         for (int index=0; index < GameManager.instance.pool.prefabs.Length; index++){
             if (data.projectile == GameManager.instance.pool.prefabs[index]) {
@@ -76,11 +76,11 @@ public class Weapon : MonoBehaviour
         
         switch (id) {
             case 0:
-                speed = 150;
+                speed = 150 * Character.WeaponSpeed;
                 Batch();
                 break;
             default:
-            speed = 0.3f;
+                speed = 0.5f * Character.WeaponRate;
                 break;
         }
 
@@ -110,7 +110,7 @@ public class Weapon : MonoBehaviour
             Vector3 rotVec = Vector3.forward * 360 * index / count;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World);
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1 is Infinity per.
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -1 is Infinity per.
         }
     }
     
@@ -127,5 +127,7 @@ public class Weapon : MonoBehaviour
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.GetComponent<Bullet>().Init(damage, count, dir); // -1 is Infinity per.
+
+        AudioManager.instance.Playsfx(AudioManager.Sfx.Range);
     }
 }
